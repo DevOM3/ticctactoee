@@ -11,7 +11,11 @@ import { green, lightGreen, red } from "@material-ui/core/colors";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { buttonVariants, containerVariants } from "../common/commonVariants";
+import {
+  buttonVariants,
+  containerVariants,
+  passwordVariant,
+} from "../common/commonVariants";
 import { db } from "../common/firebase";
 import { useStateValue } from "../context/StateProvider";
 import "./Create.css";
@@ -36,19 +40,6 @@ const formVariant = {
     x: 0,
     transition: {
       delay: 0.4,
-      type: "spring",
-    },
-  },
-};
-const passwordVariant = {
-  initial: {
-    scale: 0,
-    opacity: 0,
-  },
-  animate: {
-    scale: 1,
-    opacity: 1,
-    transitios: {
       type: "spring",
     },
   },

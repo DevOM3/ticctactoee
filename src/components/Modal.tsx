@@ -55,6 +55,7 @@ const Modal = ({
           history.push("/");
         })
         .then(() => history.push("/"));
+      history.push("/");
     }
   };
 

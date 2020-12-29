@@ -2,7 +2,11 @@ import { Button, FormControl, TextField, Typography } from "@material-ui/core";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { buttonVariants, containerVariants } from "../common/commonVariants";
+import {
+  buttonVariants,
+  containerVariants,
+  passwordVariant,
+} from "../common/commonVariants";
 import { db } from "../common/firebase";
 import { useStateValue } from "../context/StateProvider";
 import "./Join.css";
@@ -37,6 +41,9 @@ const Join = () => {
   const [{ nickname, userID }] = useStateValue();
   const [joiningID, setJoiningID] = useState("");
   const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [showPasswordField, setShowPasswordField] = useState(false);
 
   useEffect(() => {
     !nickname && history.push("/");
@@ -44,6 +51,19 @@ const Join = () => {
 
   const handleJoinClick = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    const joinRoom = () => {
+      db.collection(`rooms`)
+        .doc(joiningID)
+        .update({
+          guestID: userID,
+          guestNickname: nickname,
+          guestPoints: 0,
+          creatorPoints: 0,
+          ties: 0,
+        })
+        .then(() => history.push(`/game/${joiningID}`));
+    };
 
     db.collection("rooms")
       .doc(joiningID)
@@ -67,14 +87,24 @@ const Join = () => {
                           if (!data.data()?.guestID) {
                             db.collection(`rooms`)
                               .doc(joiningID)
-                              .update({
-                                guestID: userID,
-                                guestNickname: nickname,
-                                guestPoints: 0,
-                                creatorPoints: 0,
-                                ties: 0,
-                              })
-                              .then(() => history.push(`/game/${joiningID}`));
+                              .get()
+                              .then((response) => {
+                                if (response.data()?.passwordEnabled) {
+                                  !showPasswordField &&
+                                    setShowPasswordField(true);
+                                  if (showPasswordField) {
+                                    if (
+                                      password === response.data()?.password
+                                    ) {
+                                      joinRoom();
+                                    } else {
+                                      setPasswordError("Wrong Password");
+                                    }
+                                  }
+                                } else {
+                                  joinRoom();
+                                }
+                              });
                           } else {
                             setError("Room is already Occupied");
                           }
@@ -87,7 +117,7 @@ const Join = () => {
                       );
 
                       if (leaveJoinedRoomAndJoinThisRoom) {
-                        db.collection(`room`)
+                        db.collection(`rooms`)
                           .doc(response.docs[0].id)
                           .update({
                             guestID: "",
@@ -153,29 +183,73 @@ const Join = () => {
       </motion.div>
       <motion.div variants={formVariant} initial="initial" animate="animate">
         <FormControl>
-          <TextField
-            helperText={error}
-            FormHelperTextProps={{ style: { textAlign: "center" } }}
-            error={!!error}
-            style={{ marginBottom: 11 }}
-            onChange={(e) => {
-              setJoiningID(e.target.value);
-              if (error && e.target.value.trim()) setError("");
-            }}
-            required
-            type="text"
-            variant="outlined"
-            placeholder="Enter Joining ID"
-            value={joiningID}
-            inputProps={{
-              style: {
-                textAlign: "center",
-              },
-            }}
-          />
+          <AnimatePresence>
+            {!showPasswordField && (
+              <motion.div
+                variants={passwordVariant}
+                initial="initial"
+                animate="animate"
+                exit="initial"
+              >
+                <TextField
+                  helperText={error}
+                  FormHelperTextProps={{ style: { textAlign: "center" } }}
+                  error={!!error}
+                  style={{ marginBottom: 11 }}
+                  onChange={(e) => {
+                    setJoiningID(e.target.value);
+                    if (error && e.target.value.trim()) setError("");
+                  }}
+                  required
+                  type="text"
+                  variant="outlined"
+                  placeholder="Enter Joining ID"
+                  value={joiningID}
+                  inputProps={{
+                    style: {
+                      textAlign: "center",
+                    },
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {showPasswordField && (
+              <motion.div
+                variants={passwordVariant}
+                initial="initial"
+                animate="animate"
+                exit="initial"
+              >
+                <TextField
+                  style={{ marginBottom: 11 }}
+                  FormHelperTextProps={{ style: { textAlign: "center" } }}
+                  error={!!passwordError}
+                  helperText={passwordError}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (passwordError && e.target.value.trim())
+                      setPasswordError("");
+                  }}
+                  required
+                  type="text"
+                  variant="outlined"
+                  placeholder="Enter Room Password"
+                  value={password}
+                  inputProps={{
+                    style: {
+                      textAlign: "center",
+                    },
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <div style={{ height: 51 }}>
             <AnimatePresence>
-              {joiningID.trim() && (
+              {((joiningID.trim() && !showPasswordField) ||
+                (password.trim() && showPasswordField)) && (
                 <motion.div
                   initial="initial"
                   animate="animate"

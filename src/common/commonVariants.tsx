@@ -56,3 +56,17 @@ export const modalVariants = {
     },
   },
 };
+
+export const passwordVariant = {
+  initial: {
+    scale: 0,
+    opacity: 0,
+  },
+  animate: {
+    scale: 1,
+    opacity: 1,
+    transitios: {
+      type: "spring",
+    },
+  },
+};
