@@ -45,6 +45,10 @@ const Game = () => {
   const [showRestartModal, setShowRestartModal] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [disband, setDisband] = useState(false);
+  const [creatorPoints, setCreatorPoints] = useState(0);
+  const [guestPoints, setGuestPoints] = useState(0);
+  const [ties, setTies] = useState(0);
+  const [shouldUpdatePoints, setShouldUpdatePoints] = useState(true);
   const [offlineMatrix, setOfflineMatrix] = useState<string[]>([
     "",
     "",
@@ -56,6 +60,14 @@ const Game = () => {
     "",
     "",
   ]);
+
+  useEffect(() => {
+    if (gameData?.matrices && gameData?.id) {
+      setCreatorPoints(gameData?.creatorPoints + 1);
+      setGuestPoints(gameData?.guestPoints + 1);
+      setTies(gameData?.ties + 1);
+    }
+  }, [gameData]);
 
   useEffect(() => {
     const unsubscribeGameDataEvents = db
@@ -101,8 +113,106 @@ const Game = () => {
 
   useEffect(() => {
     if (
+      gameData?.matrices !== undefined &&
+      gameData?.id &&
+      gameData?.creatorID !== undefined &&
+      gameData?.creatorID === userID &&
+      shouldUpdatePoints
+    ) {
+      if (
+        (offlineMatrix[0] === "X" &&
+          offlineMatrix[1] === "X" &&
+          offlineMatrix[2] === "X") ||
+        (offlineMatrix[3] === "X" &&
+          offlineMatrix[4] === "X" &&
+          offlineMatrix[5] === "X") ||
+        (offlineMatrix[6] === "X" &&
+          offlineMatrix[7] === "X" &&
+          offlineMatrix[8] === "X") ||
+        (offlineMatrix[0] === "X" &&
+          offlineMatrix[3] === "X" &&
+          offlineMatrix[6] === "X") ||
+        (offlineMatrix[1] === "X" &&
+          offlineMatrix[4] === "X" &&
+          offlineMatrix[7] === "X") ||
+        (offlineMatrix[2] === "X" &&
+          offlineMatrix[5] === "X" &&
+          offlineMatrix[8] === "X") ||
+        (offlineMatrix[0] === "X" &&
+          offlineMatrix[4] === "X" &&
+          offlineMatrix[8] === "X") ||
+        (offlineMatrix[2] === "X" &&
+          offlineMatrix[4] === "X" &&
+          offlineMatrix[6] === "X")
+      ) {
+        db.collection(`rooms`)
+          .doc(gameData?.id)
+          .update({
+            creatorPoints: creatorPoints,
+          })
+          .then(() => setShowRestartModal(true));
+        setShouldUpdatePoints(false);
+      } else if (
+        (offlineMatrix[0] === "O" &&
+          offlineMatrix[1] === "O" &&
+          offlineMatrix[2] === "O") ||
+        (offlineMatrix[3] === "O" &&
+          offlineMatrix[4] === "O" &&
+          offlineMatrix[5] === "O") ||
+        (offlineMatrix[6] === "O" &&
+          offlineMatrix[7] === "O" &&
+          offlineMatrix[8] === "O") ||
+        (offlineMatrix[0] === "O" &&
+          offlineMatrix[3] === "O" &&
+          offlineMatrix[6] === "O") ||
+        (offlineMatrix[1] === "O" &&
+          offlineMatrix[4] === "O" &&
+          offlineMatrix[7] === "O") ||
+        (offlineMatrix[2] === "O" &&
+          offlineMatrix[5] === "O" &&
+          offlineMatrix[8] === "O") ||
+        (offlineMatrix[0] === "O" &&
+          offlineMatrix[4] === "O" &&
+          offlineMatrix[8] === "O") ||
+        (offlineMatrix[2] === "O" &&
+          offlineMatrix[4] === "O" &&
+          offlineMatrix[6] === "O")
+      ) {
+        db.collection(`rooms`)
+          .doc(gameData?.id)
+          .update({
+            guestPoints: guestPoints,
+          })
+          .then(() => setShowRestartModal(true));
+        setShouldUpdatePoints(false);
+      } else if (
+        offlineMatrix[0] !== "" &&
+        offlineMatrix[1] !== "" &&
+        offlineMatrix[2] !== "" &&
+        offlineMatrix[3] !== "" &&
+        offlineMatrix[4] !== "" &&
+        offlineMatrix[5] !== "" &&
+        offlineMatrix[6] !== "" &&
+        offlineMatrix[7] !== "" &&
+        offlineMatrix[8] !== ""
+      ) {
+        db.collection(`rooms`)
+          .doc(gameData?.id)
+          .update({
+            ties: ties,
+          })
+          .then(() => setShowRestartModal(true));
+        setShouldUpdatePoints(false);
+      }
+    }
+  }, [offlineMatrix]);
+
+  useEffect(() => {
+    if (
       offlineMatrix !== ["", "", "", "", "", "", "", "", ""] &&
-      offlineMatrix !== gameData?.matrices
+      offlineMatrix !== gameData?.matrices &&
+      gameData?.id &&
+      gameData?.matrices
     ) {
       updateDatabaseGridBox();
     }
@@ -174,12 +284,14 @@ const Game = () => {
         showModal={showLeaveModal}
         setShowModal={setShowLeaveModal}
         type="leave"
+        setShouldUpdatePoints={undefined}
       />
       <Modal
         isHost={gameData?.creatorID === userID}
         roomID={gameData?.id}
         showModal={showRestartModal}
-        setShowModal={setShowLeaveModal}
+        setShowModal={setShowRestartModal}
+        setShouldUpdatePoints={setShouldUpdatePoints}
         type="restart"
       />
       <div className="game__guest">

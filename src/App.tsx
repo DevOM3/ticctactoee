@@ -12,16 +12,16 @@ function App() {
   return (
     <div className="app">
       <AnimatePresence exitBeforeEnter>
-        <Route exact path="/game/:requestedRoomID">
+        <Route exact path="/game/:requestedRoomID" key="game">
           <Game />
         </Route>
-        <Route exact path="/create">
+        <Route exact path="/create" key="create">
           <Create />
         </Route>
-        <Route exact path="/join">
+        <Route exact path="/join" key="join">
           <Join />
         </Route>
-        <Route exact path="/">
+        <Route exact path="/" key="home">
           <Home />
         </Route>
       </AnimatePresence>

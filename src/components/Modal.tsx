@@ -14,6 +14,7 @@ interface LeaveModalInterface {
   showModal: boolean;
   setShowModal: Function;
   type: string | undefined;
+  setShouldUpdatePoints: Function | undefined;
 }
 
 const Modal = ({
@@ -22,12 +23,13 @@ const Modal = ({
   showModal,
   setShowModal,
   type,
+  setShouldUpdatePoints,
 }: LeaveModalInterface) => {
   const history = useHistory();
 
   const handleExitClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log(roomID);
+
     if (isHost) {
       history.push("/");
       db.collection(`rooms`)
@@ -61,6 +63,16 @@ const Modal = ({
 
   const handleRestart = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    db.collection(`rooms`)
+      .doc(roomID)
+      .update({
+        matrix: ["", "", "", "", "", "", "", "", ""],
+      })
+      .then(() => {
+        setShowModal(false);
+        setShouldUpdatePoints && setShouldUpdatePoints(true);
+      });
   };
 
   return (
