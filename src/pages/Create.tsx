@@ -67,7 +67,7 @@ const Create = () => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    nickname ? setRoomName(`${nickname}'s Room`) : history.push("/");
+    nickname ? setRoomName(`${nickname}'s Room`) : history.replace("/");
   }, []);
 
   const handleCreateButtonClick = (e: React.MouseEvent) => {
@@ -111,7 +111,7 @@ const Create = () => {
                     ],
                     chanceOf: chanceOf,
                   })
-                  .then((response) => history.push(`/game/${response.id}`));
+                  .then((response) => history.replace(`/game/${response.id}`));
               } else {
                 const createNewRoom = window.confirm(
                   `You are already playing as a guest in another Room, \nDo you wish to exit "${
@@ -152,7 +152,7 @@ const Create = () => {
           );
 
           if (enterPreviousRoom) {
-            history.push(`/game/${response.docs[0].id}`);
+            history.replace(`/game/${response.docs[0].id}`);
           } else {
             const createNewRoom = window.confirm(
               `Do you want to create a new Room with this new Data?`
@@ -185,7 +185,7 @@ const Create = () => {
                   ],
                   chanceOf: chanceOf,
                 })
-                .then(() => history.push(`/game/${response.docs[0].id}`));
+                .then(() => history.replace(`/game/${response.docs[0].id}`));
             }
           }
         }

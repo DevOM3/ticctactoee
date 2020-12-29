@@ -46,7 +46,7 @@ const Join = () => {
   const [showPasswordField, setShowPasswordField] = useState(false);
 
   useEffect(() => {
-    !nickname && history.push("/");
+    !nickname && history.replace("/");
   }, []);
 
   const handleJoinClick = (e: React.MouseEvent) => {
@@ -62,7 +62,7 @@ const Join = () => {
           creatorPoints: 0,
           ties: 0,
         })
-        .then(() => history.push(`/game/${joiningID}`));
+        .then(() => history.replace(`/game/${joiningID}`));
     };
 
     db.collection("rooms")

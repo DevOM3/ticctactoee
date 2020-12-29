@@ -2,6 +2,7 @@ import { IconButton, Snackbar } from "@material-ui/core";
 import "./Loader.css";
 import ShareRoundedIcon from "@material-ui/icons/ShareRounded";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface LoaderInterface {
   id: string | undefined;
@@ -26,13 +27,19 @@ const Loader = ({ id, isHost, password }: LoaderInterface) => {
           message="Room joining informationcopied to clipboard"
         />
       )}
-      <div className="square">
+      <motion.div
+        className="square"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+      >
         <div></div>
         <div></div>
         <div></div>
         <div></div>
-      </div>
-      <h2>{isHost ? "Waiting for player to Join" : "Joining the Room"}</h2>
+      </motion.div>
+      <motion.h2 initial={{ y: "100vh" }} animate={{ y: 0 }}>
+        {isHost ? "Waiting for player to Join" : "Joining the Room"}
+      </motion.h2>
       {isHost && (
         <IconButton
           onClick={() => {

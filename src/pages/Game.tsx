@@ -1,6 +1,6 @@
-import { Button, IconButton, Snackbar } from "@material-ui/core";
+import { IconButton, Snackbar } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 import { db } from "../common/firebase";
 import PlayerInfo from "../components/PlayerInfo";
 import "./Game.css";
@@ -37,15 +37,18 @@ interface PlayerInfoInterface {
 }
 
 const Game = () => {
+  const history = useHistory();
   const [{ userID }] = useStateValue();
   const [gameData, setGameData] = useState<PlayerInfoInterface>();
   const { requestedRoomID } = useParams<{ requestedRoomID: string }>();
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showRestartModal, setShowRestartModal] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const [disband, setDisband] = useState(false);
 
   useEffect(() => {
-    db.collection(`rooms`)
+    const unsubscribeGameDataEvents = db
+      .collection(`rooms`)
       .doc(requestedRoomID)
       .onSnapshot((snapshot) =>
         setGameData({
@@ -64,7 +67,23 @@ const Game = () => {
           chanceOf: snapshot.data()?.chanceOf,
         })
       );
+
+    return () => unsubscribeGameDataEvents();
   }, []);
+
+  useEffect(() => {
+    if (!gameData?.matrices && gameData?.id) {
+      db.collection(`rooms`)
+        .doc(gameData?.id)
+        .get()
+        .then((response) => {
+          if (!response.exists) {
+            setDisband(true);
+            history.replace("/");
+          }
+        });
+    }
+  }, [gameData]);
 
   if (showSnackbar) {
     setTimeout(() => setShowSnackbar(false), 4000);
@@ -203,6 +222,8 @@ const Game = () => {
         />
       </div>
     </motion.div>
+  ) : disband ? (
+    <Redirect to="/" />
   ) : (
     <Loader
       id={gameData?.id}
