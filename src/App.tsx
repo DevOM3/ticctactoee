@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Home from "./pages/Home";
+import { Route, Switch, useLocation } from "react-router-dom";
+import Join from "./pages/Join";
+import Game from "./pages/Game";
+import Create from "./pages/Create";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
+  const location = useLocation();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <AnimatePresence exitBeforeEnter>
+        <Switch location={location} key={location.key}>
+          <Route path="/game/:requestedRoomID">
+            <Game />
+          </Route>
+          <Route path="/create">
+            <Create />
+          </Route>
+          <Route path="/join">
+            <Join />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </AnimatePresence>
     </div>
   );
 }

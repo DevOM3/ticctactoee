@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Aldrich&family=Carter+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap");
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.userInfo__name {
+  font-family: "Yeon Sung", cursive;
+  font-size: 3rem;
+}
+
+.userInfo__score {
+  font-family: "Aldrich", sans-serif;
+  font-size: 5rem;
+}

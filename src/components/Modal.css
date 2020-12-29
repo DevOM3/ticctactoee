@@ -1,0 +1,22 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.85);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.modal__leaveModalButtonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: whitesmoke;
+  padding: 21px;
+  padding-bottom: 0;
+  border: 2px solid black;
+  border-radius: 21px;
+  box-shadow: 0px 0px 11px 7px rgb(255, 255, 255, 0.5);
+}

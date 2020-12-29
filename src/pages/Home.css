@@ -1,0 +1,30 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.home__title {
+  margin-bottom: 21px;
+}
+
+.MuiButtonGroup-root {
+  margin-top: 21px;
+}
+
+.home__title > span {
+  display: inline-block;
+  opacity: 0.4;
+  transform: scale(1);
+  transition: all 0.7s ease;
+  font-size: 3rem;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.home__title > .home__titleSpan {
+  opacity: 1;
+  transform: scale(1.51);
+}
