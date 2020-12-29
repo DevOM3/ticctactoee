@@ -38,7 +38,7 @@ interface PlayerInfoInterface {
 
 const Game = () => {
   const history = useHistory();
-  const [{ userID }] = useStateValue();
+  const [{ nickname, userID }] = useStateValue();
   const [gameData, setGameData] = useState<PlayerInfoInterface>();
   const { requestedRoomID } = useParams<{ requestedRoomID: string }>();
   const [showLeaveModal, setShowLeaveModal] = useState(false);
