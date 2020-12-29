@@ -120,30 +120,30 @@ const Game = () => {
       shouldUpdatePoints
     ) {
       if (
-        (offlineMatrix[0] === "X" &&
-          offlineMatrix[1] === "X" &&
-          offlineMatrix[2] === "X") ||
-        (offlineMatrix[3] === "X" &&
-          offlineMatrix[4] === "X" &&
-          offlineMatrix[5] === "X") ||
-        (offlineMatrix[6] === "X" &&
-          offlineMatrix[7] === "X" &&
-          offlineMatrix[8] === "X") ||
-        (offlineMatrix[0] === "X" &&
-          offlineMatrix[3] === "X" &&
-          offlineMatrix[6] === "X") ||
-        (offlineMatrix[1] === "X" &&
-          offlineMatrix[4] === "X" &&
-          offlineMatrix[7] === "X") ||
-        (offlineMatrix[2] === "X" &&
-          offlineMatrix[5] === "X" &&
-          offlineMatrix[8] === "X") ||
-        (offlineMatrix[0] === "X" &&
-          offlineMatrix[4] === "X" &&
-          offlineMatrix[8] === "X") ||
-        (offlineMatrix[2] === "X" &&
-          offlineMatrix[4] === "X" &&
-          offlineMatrix[6] === "X")
+        (gameData?.matrices[0] === "X" &&
+          gameData?.matrices[1] === "X" &&
+          gameData?.matrices[2] === "X") ||
+        (gameData?.matrices[3] === "X" &&
+          gameData?.matrices[4] === "X" &&
+          gameData?.matrices[5] === "X") ||
+        (gameData?.matrices[6] === "X" &&
+          gameData?.matrices[7] === "X" &&
+          gameData?.matrices[8] === "X") ||
+        (gameData?.matrices[0] === "X" &&
+          gameData?.matrices[3] === "X" &&
+          gameData?.matrices[6] === "X") ||
+        (gameData?.matrices[1] === "X" &&
+          gameData?.matrices[4] === "X" &&
+          gameData?.matrices[7] === "X") ||
+        (gameData?.matrices[2] === "X" &&
+          gameData?.matrices[5] === "X" &&
+          gameData?.matrices[8] === "X") ||
+        (gameData?.matrices[0] === "X" &&
+          gameData?.matrices[4] === "X" &&
+          gameData?.matrices[8] === "X") ||
+        (gameData?.matrices[2] === "X" &&
+          gameData?.matrices[4] === "X" &&
+          gameData?.matrices[6] === "X")
       ) {
         db.collection(`rooms`)
           .doc(gameData?.id)
@@ -153,30 +153,30 @@ const Game = () => {
           .then(() => setShowRestartModal(true));
         setShouldUpdatePoints(false);
       } else if (
-        (offlineMatrix[0] === "O" &&
-          offlineMatrix[1] === "O" &&
-          offlineMatrix[2] === "O") ||
-        (offlineMatrix[3] === "O" &&
-          offlineMatrix[4] === "O" &&
-          offlineMatrix[5] === "O") ||
-        (offlineMatrix[6] === "O" &&
-          offlineMatrix[7] === "O" &&
-          offlineMatrix[8] === "O") ||
-        (offlineMatrix[0] === "O" &&
-          offlineMatrix[3] === "O" &&
-          offlineMatrix[6] === "O") ||
-        (offlineMatrix[1] === "O" &&
-          offlineMatrix[4] === "O" &&
-          offlineMatrix[7] === "O") ||
-        (offlineMatrix[2] === "O" &&
-          offlineMatrix[5] === "O" &&
-          offlineMatrix[8] === "O") ||
-        (offlineMatrix[0] === "O" &&
-          offlineMatrix[4] === "O" &&
-          offlineMatrix[8] === "O") ||
-        (offlineMatrix[2] === "O" &&
-          offlineMatrix[4] === "O" &&
-          offlineMatrix[6] === "O")
+        (gameData?.matrices[0] === "O" &&
+          gameData?.matrices[1] === "O" &&
+          gameData?.matrices[2] === "O") ||
+        (gameData?.matrices[3] === "O" &&
+          gameData?.matrices[4] === "O" &&
+          gameData?.matrices[5] === "O") ||
+        (gameData?.matrices[6] === "O" &&
+          gameData?.matrices[7] === "O" &&
+          gameData?.matrices[8] === "O") ||
+        (gameData?.matrices[0] === "O" &&
+          gameData?.matrices[3] === "O" &&
+          gameData?.matrices[6] === "O") ||
+        (gameData?.matrices[1] === "O" &&
+          gameData?.matrices[4] === "O" &&
+          gameData?.matrices[7] === "O") ||
+        (gameData?.matrices[2] === "O" &&
+          gameData?.matrices[5] === "O" &&
+          gameData?.matrices[8] === "O") ||
+        (gameData?.matrices[0] === "O" &&
+          gameData?.matrices[4] === "O" &&
+          gameData?.matrices[8] === "O") ||
+        (gameData?.matrices[2] === "O" &&
+          gameData?.matrices[4] === "O" &&
+          gameData?.matrices[6] === "O")
       ) {
         db.collection(`rooms`)
           .doc(gameData?.id)
@@ -186,15 +186,15 @@ const Game = () => {
           .then(() => setShowRestartModal(true));
         setShouldUpdatePoints(false);
       } else if (
-        offlineMatrix[0] !== "" &&
-        offlineMatrix[1] !== "" &&
-        offlineMatrix[2] !== "" &&
-        offlineMatrix[3] !== "" &&
-        offlineMatrix[4] !== "" &&
-        offlineMatrix[5] !== "" &&
-        offlineMatrix[6] !== "" &&
-        offlineMatrix[7] !== "" &&
-        offlineMatrix[8] !== ""
+        gameData?.matrices[0] !== "" &&
+        gameData?.matrices[1] !== "" &&
+        gameData?.matrices[2] !== "" &&
+        gameData?.matrices[3] !== "" &&
+        gameData?.matrices[4] !== "" &&
+        gameData?.matrices[5] !== "" &&
+        gameData?.matrices[6] !== "" &&
+        gameData?.matrices[7] !== "" &&
+        gameData?.matrices[8] !== ""
       ) {
         db.collection(`rooms`)
           .doc(gameData?.id)
