@@ -1,6 +1,6 @@
 import { IconButton, Snackbar } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { Redirect, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { db } from "../common/firebase";
 import PlayerInfo from "../components/PlayerInfo";
 import "./Game.css";
@@ -8,7 +8,6 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import ShareRoundedIcon from "@material-ui/icons/ShareRounded";
 import { useStateValue } from "../context/StateProvider";
 import Modal from "../components/Modal";
-import StopScreenShareIcon from "@material-ui/icons/StopScreenShare";
 import { motion } from "framer-motion";
 import { containerVariants } from "../common/commonVariants";
 import {
@@ -19,6 +18,7 @@ import {
   gridBoxVariants,
 } from "../common/GameVariants";
 import Loader from "../components/Loader";
+import ExitLoader from "../components/ExitLoader";
 
 interface PlayerInfoInterface {
   id: string;
@@ -38,7 +38,7 @@ interface PlayerInfoInterface {
 
 const Game = () => {
   const history = useHistory();
-  const [{ nickname, userID }] = useStateValue();
+  const [{ userID }] = useStateValue();
   const [gameData, setGameData] = useState<PlayerInfoInterface>();
   const { requestedRoomID } = useParams<{ requestedRoomID: string }>();
   const [showLeaveModal, setShowLeaveModal] = useState(false);
@@ -274,12 +274,13 @@ const Game = () => {
         onClose={() => setShowSnackbar(false)}
         message={
           gameData?.creatorID === userID
-            ? "Room joining information copied to clipboard"
-            : "You can't share the joining link you are not host"
+            ? "Room joining information copied to the clipboard"
+            : "Spactating link copied"
         }
       />
       <Modal
         isHost={gameData?.creatorID === userID}
+        isGuest={gameData?.guestID === userID}
         roomID={gameData?.id}
         showModal={showLeaveModal}
         setShowModal={setShowLeaveModal}
@@ -288,6 +289,7 @@ const Game = () => {
       />
       <Modal
         isHost={gameData?.creatorID === userID}
+        isGuest={gameData?.guestID === userID}
         roomID={gameData?.id}
         showModal={showRestartModal}
         setShowModal={setShowRestartModal}
@@ -314,22 +316,16 @@ const Game = () => {
           initial="initial"
           animate="animate"
         >
-          {gameData?.creatorID === userID ? (
-            <IconButton
-              onClick={() => {
-                setShowSnackbar(true);
-                navigator.clipboard.writeText(
-                  `Joining link: http://127.0.0.1/game/${gameData?.id}\nJoining ID: ${gameData?.id}`
-                );
-              }}
-            >
-              <ShareRoundedIcon fontSize="large" />
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => setShowSnackbar(true)}>
-              <StopScreenShareIcon fontSize="large" />
-            </IconButton>
-          )}
+          <IconButton
+            onClick={() => {
+              setShowSnackbar(true);
+              navigator.clipboard.writeText(
+                `Spectating link: http://127.0.0.1:3000/game/${gameData?.id}`
+              );
+            }}
+          >
+            <ShareRoundedIcon fontSize="large" />
+          </IconButton>
           <motion.h1
             className="game__roomName"
             variants={centerTopTitleVariants}
@@ -397,7 +393,7 @@ const Game = () => {
       </div>
     </motion.div>
   ) : disband ? (
-    <Redirect to="/" />
+    <ExitLoader />
   ) : (
     <Loader
       id={gameData?.id}

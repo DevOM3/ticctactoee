@@ -1,10 +1,11 @@
 import "./App.css";
 import Home from "./pages/Home";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Route, useLocation, Switch } from "react-router-dom";
 import Join from "./pages/Join";
 import Game from "./pages/Game";
 import Create from "./pages/Create";
 import { AnimatePresence } from "framer-motion";
+import ExitLoader from "./components/ExitLoader";
 
 function App() {
   const location = useLocation();
@@ -12,18 +13,23 @@ function App() {
   return (
     <div className="app">
       <AnimatePresence exitBeforeEnter>
-        <Route exact path="/game/:requestedRoomID" key="game">
-          <Game />
-        </Route>
-        <Route exact path="/create" key="create">
-          <Create />
-        </Route>
-        <Route exact path="/join" key="join">
-          <Join />
-        </Route>
-        <Route exact path="/" key="home">
-          <Home />
-        </Route>
+        <Switch location={location} key={location.key}>
+          <Route exact path="/game/:requestedRoomID" key="game">
+            <Game />
+          </Route>
+          <Route exact path="/create" key="create">
+            <Create />
+          </Route>
+          <Route exact path="/join" key="join">
+            <Join />
+          </Route>
+          <Route exact path="/" key="home">
+            <Home />
+          </Route>
+          <Route exact path="/exit" key="exit">
+            <ExitLoader />
+          </Route>
+        </Switch>
       </AnimatePresence>
     </div>
   );

@@ -15,6 +15,7 @@ interface LeaveModalInterface {
   setShowModal: Function;
   type: string | undefined;
   setShouldUpdatePoints: Function | undefined;
+  isGuest: boolean | undefined;
 }
 
 const Modal = ({
@@ -24,6 +25,7 @@ const Modal = ({
   setShowModal,
   type,
   setShouldUpdatePoints,
+  isGuest,
 }: LeaveModalInterface) => {
   const history = useHistory();
 
@@ -40,7 +42,7 @@ const Modal = ({
           history.push("/");
         })
         .then(() => history.push("/"));
-    } else {
+    } else if (isGuest) {
       history.push("/");
       db.collection(`rooms`)
         .doc(roomID)
@@ -58,6 +60,8 @@ const Modal = ({
         })
         .then(() => history.push("/"));
       history.push("/");
+    } else {
+      history.replace("/");
     }
   };
 

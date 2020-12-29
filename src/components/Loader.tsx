@@ -24,7 +24,7 @@ const Loader = ({ id, isHost, password }: LoaderInterface) => {
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           open={showSnackbar}
           onClose={() => setShowSnackbar(false)}
-          message="Room joining informationcopied to clipboard"
+          message="Room joining information copied to the clipboard"
         />
       )}
       <motion.div
@@ -45,7 +45,7 @@ const Loader = ({ id, isHost, password }: LoaderInterface) => {
           onClick={() => {
             setShowSnackbar(true);
             navigator.clipboard.writeText(
-              `Joining link: http://127.0.0.1/game/${id}\nJoining ID: ${id}${
+              `Joining link: http://127.0.0.1:3000/\nJoining ID: ${id}${
                 password && "\nPassword: " + password
               }`
             );

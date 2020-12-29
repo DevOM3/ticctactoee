@@ -47,7 +47,7 @@ const Join = () => {
 
   useEffect(() => {
     !nickname && history.replace("/");
-  }, []);
+  }, [nickname, history]);
 
   const handleJoinClick = (e: React.MouseEvent) => {
     e.preventDefault();
