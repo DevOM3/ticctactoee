@@ -32,7 +32,7 @@ interface PlayerInfoInterface {
   creatorPoints: number;
   guestPoints: number;
   ties: number;
-  matrices: Array<number>;
+  matrices: Array<string>;
   chanceOf: string;
 }
 
@@ -45,6 +45,17 @@ const Game = () => {
   const [showRestartModal, setShowRestartModal] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [disband, setDisband] = useState(false);
+  const [offlineMatrix, setOfflineMatrix] = useState<string[]>([
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ]);
 
   useEffect(() => {
     const unsubscribeGameDataEvents = db
@@ -83,7 +94,57 @@ const Game = () => {
           }
         });
     }
+    if (gameData?.matrices) {
+      setOfflineMatrix(gameData?.matrices);
+    }
   }, [gameData]);
+
+  useEffect(() => {
+    if (
+      offlineMatrix !== ["", "", "", "", "", "", "", "", ""] &&
+      offlineMatrix !== gameData?.matrices
+    ) {
+      updateDatabaseGridBox();
+    }
+  }, [offlineMatrix]);
+
+  const handleGridBoxClicks = (e: React.MouseEvent, index: number) => {
+    if (offlineMatrix[index] === "") {
+      if (gameData?.chanceOf === "creator" && gameData?.creatorID === userID) {
+        setOfflineMatrix(
+          offlineMatrix.map((element, elementIndex) => {
+            if (elementIndex === index) {
+              return "X";
+            } else {
+              return element;
+            }
+          })
+        );
+      } else if (
+        gameData?.chanceOf === "guest" &&
+        gameData?.guestID === userID
+      ) {
+        setOfflineMatrix(
+          offlineMatrix.map((element, elementIndex) => {
+            if (elementIndex === index) {
+              return "O";
+            } else {
+              return element;
+            }
+          })
+        );
+      }
+    }
+  };
+
+  const updateDatabaseGridBox = () => {
+    db.collection(`rooms`)
+      .doc(gameData?.id)
+      .update({
+        matrix: offlineMatrix,
+        chanceOf: gameData?.chanceOf === "creator" ? "guest" : "creator",
+      });
+  };
 
   if (showSnackbar) {
     setTimeout(() => setShowSnackbar(false), 4000);
@@ -179,6 +240,7 @@ const Game = () => {
           <div className="game__board">
             {gameData?.matrices?.map((matrixElement, index) => (
               <motion.div
+                onClick={(e) => handleGridBoxClicks(e, index)}
                 variants={gridBoxVariants}
                 whileHover="hover"
                 initial="initial"
@@ -191,7 +253,7 @@ const Game = () => {
                       gameData?.creatorID === userID) ||
                       (gameData?.chanceOf === "guest" &&
                         gameData?.guestID === userID)) &&
-                    matrixElement === null
+                    matrixElement.toString() === ""
                       ? "cell"
                       : "not-allowed",
                 }}

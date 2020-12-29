@@ -125,17 +125,7 @@ const Join = () => {
                             guestPoints: 0,
                             creatorPoints: 0,
                             ties: 0,
-                            matrix: [
-                              null,
-                              null,
-                              null,
-                              null,
-                              null,
-                              null,
-                              null,
-                              null,
-                              null,
-                            ],
+                            matrix: ["", "", "", "", "", "", "", "", ""],
                           })
                           .then(() => handleJoinClick(e));
                       }

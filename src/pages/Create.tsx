@@ -98,17 +98,7 @@ const Create = () => {
                     creatorPoints: 0,
                     guestPoints: 0,
                     ties: 0,
-                    matrix: [
-                      null,
-                      null,
-                      null,
-                      null,
-                      null,
-                      null,
-                      null,
-                      null,
-                      null,
-                    ],
+                    matrix: ["", "", "", "", "", "", "", "", ""],
                     chanceOf: chanceOf,
                   })
                   .then((response) => history.replace(`/game/${response.id}`));
@@ -128,17 +118,7 @@ const Create = () => {
                       guestPoints: 0,
                       creatorPoints: 0,
                       ties: 0,
-                      matrix: [
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                      ],
+                      matrix: ["", "", "", "", "", "", "", "", ""],
                     })
                     .then(() => handleCreateButtonClick(e));
                 }
@@ -172,17 +152,7 @@ const Create = () => {
                   creatorPoints: 0,
                   guestPoints: 0,
                   ties: 0,
-                  matrix: [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                  ],
+                  matrix: ["", "", "", "", "", "", "", "", ""],
                   chanceOf: chanceOf,
                 })
                 .then(() => history.replace(`/game/${response.docs[0].id}`));
