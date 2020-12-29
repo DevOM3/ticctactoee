@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./ExitLoader.css";
@@ -11,12 +12,12 @@ const ExitLoader = () => {
   }, []);
 
   return (
-    <div className="exitLoader">
+    <motion.div className="exitLoader">
       <div className="spinner">
         <div></div>
         <div></div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

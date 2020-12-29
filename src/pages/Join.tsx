@@ -182,10 +182,11 @@ const Join = () => {
                 exit="initial"
               >
                 <TextField
+                  autoFocus
                   helperText={error}
                   FormHelperTextProps={{ style: { textAlign: "center" } }}
                   error={!!error}
-                  style={{ marginBottom: 11 }}
+                  style={{ marginBottom: 11, caretColor: "transparent" }}
                   onChange={(e) => {
                     setJoiningID(e.target.value);
                     if (error && e.target.value.trim()) setError("");
@@ -213,7 +214,8 @@ const Join = () => {
                 exit="initial"
               >
                 <TextField
-                  style={{ marginBottom: 11 }}
+                  autoFocus
+                  style={{ marginBottom: 11, caretColor: "transparent" }}
                   FormHelperTextProps={{ style: { textAlign: "center" } }}
                   error={!!passwordError}
                   helperText={passwordError}

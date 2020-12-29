@@ -184,8 +184,9 @@ const Create = () => {
       <motion.div variants={formVariant} initial="initial" animate="animate">
         <FormControl>
           <TextField
-            style={{ marginBottom: 11 }}
-            onChange={(e) => setRoomName(e.target.value)}
+            autoFocus
+            style={{ marginBottom: 11, caretColor: "transparent" }}
+            onChange={(e) => setRoomName(e.target.value.slice(0, 17))}
             required
             type="text"
             variant="outlined"
@@ -219,8 +220,9 @@ const Create = () => {
                 exit="initial"
               >
                 <TextField
-                  style={{ marginBottom: 11 }}
-                  onChange={(e) => setPassword(e.target.value)}
+                  autoFocus
+                  style={{ marginBottom: 11, caretColor: "transparent" }}
+                  onChange={(e) => setPassword(e.target.value.slice(0, 12))}
                   required
                   type="text"
                   variant="outlined"
@@ -238,7 +240,7 @@ const Create = () => {
           <div style={{ height: 51 }}>
             <AnimatePresence>
               {((roomName.trim() && !enablePassword) ||
-                (enablePassword && password.trim())) && (
+                (enablePassword && password.trim().length >= 4)) && (
                 <motion.div
                   initial="initial"
                   animate="animate"

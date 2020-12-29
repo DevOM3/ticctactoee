@@ -5,7 +5,6 @@ import Join from "./pages/Join";
 import Game from "./pages/Game";
 import Create from "./pages/Create";
 import { AnimatePresence } from "framer-motion";
-import ExitLoader from "./components/ExitLoader";
 
 function App() {
   const location = useLocation();
@@ -25,9 +24,6 @@ function App() {
           </Route>
           <Route exact path="/" key="home">
             <Home />
-          </Route>
-          <Route exact path="/exit" key="exit">
-            <ExitLoader />
           </Route>
         </Switch>
       </AnimatePresence>

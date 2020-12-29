@@ -97,8 +97,9 @@ const Home = () => {
         <motion.div variants={divVariants} initial="initial" animate="animate">
           <FormControl>
             <TextField
-              style={{ marginBottom: 11 }}
-              onChange={(e) => setNickName(e.target.value)}
+              autoFocus
+              style={{ marginBottom: 11, caretColor: "transparent" }}
+              onChange={(e) => setNickName(e.target.value.slice(0, 10))}
               required
               type="text"
               variant="outlined"
