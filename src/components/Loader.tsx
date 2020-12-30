@@ -1,8 +1,10 @@
 import { IconButton, Snackbar } from "@material-ui/core";
 import "./Loader.css";
 import ShareRoundedIcon from "@material-ui/icons/ShareRounded";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { containerDivVariants } from "../common/commonVariants";
+import VanillaTilt from "vanilla-tilt";
 
 interface LoaderInterface {
   id: string | undefined;
@@ -12,6 +14,20 @@ interface LoaderInterface {
 
 const Loader = ({ id, isHost, password }: LoaderInterface) => {
   const [showSnackbar, setShowSnackbar] = useState(false);
+
+  useEffect(() => {
+    const homeContainer: HTMLElement = document.querySelector(
+      "#loader__contanier"
+    ) as HTMLElement;
+    if (homeContainer) {
+      VanillaTilt.init(homeContainer, {
+        max: 21,
+        speed: 444,
+        glare: true,
+        "max-glare": 1,
+      });
+    }
+  }, []);
 
   if (showSnackbar) {
     setTimeout(() => setShowSnackbar(false), 4000);
@@ -28,32 +44,41 @@ const Loader = ({ id, isHost, password }: LoaderInterface) => {
         />
       )}
       <motion.div
-        className="square"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
+        id="loader__contanier"
+        className="loader__contanier"
+        variants={containerDivVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
       >
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </motion.div>
-      <motion.h2 initial={{ y: "100vh" }} animate={{ y: 0 }}>
-        {isHost ? "Waiting for player to Join" : "Joining the Room"}
-      </motion.h2>
-      {isHost && (
-        <IconButton
-          onClick={() => {
-            setShowSnackbar(true);
-            navigator.clipboard.writeText(
-              `Joining link: http://127.0.0.1:3000/\nJoining ID: ${id}${
-                password && "\nPassword: " + password
-              }`
-            );
-          }}
+        <motion.div
+          className="square"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
         >
-          <ShareRoundedIcon fontSize="large" />
-        </IconButton>
-      )}
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </motion.div>
+        <motion.h2 initial={{ y: "100vh" }} animate={{ y: 0 }}>
+          {isHost ? "Waiting for player to Join" : "Joining the Room"}
+        </motion.h2>
+        {isHost && (
+          <IconButton
+            onClick={() => {
+              setShowSnackbar(true);
+              navigator.clipboard.writeText(
+                `Joining link: http://127.0.0.1:3000/\nJoining ID: ${id}${
+                  password && "\nPassword: " + password
+                }`
+              );
+            }}
+          >
+            <ShareRoundedIcon fontSize="large" />
+          </IconButton>
+        )}
+      </motion.div>
     </div>
   );
 };

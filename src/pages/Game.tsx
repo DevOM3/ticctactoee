@@ -15,7 +15,6 @@ import {
   centerCenterVariants,
   centerTopTitleVariants,
   centerTopVariants,
-  gridBoxVariants,
 } from "../common/GameVariants";
 import Loader from "../components/Loader";
 import ExitLoader from "../components/ExitLoader";
@@ -218,6 +217,21 @@ const Game = () => {
     }
   }, [offlineMatrix]);
 
+  // useEffect(() => {
+  //   const grids = document.querySelectorAll(
+  //     ".game__boardBox"
+  //   ) as NodeListOf<HTMLElement>;
+  //   if (grids) {
+  //     grids.forEach((grid: HTMLElement) => {
+  //       if (grid.innerText === "X") {
+  //         grid.style.backgroundColor = "greenyellow";
+  //       } else if (grid.innerText === "O") {
+  //         grid.style.backgroundColor = "tomato";
+  //       }
+  //     });
+  //   }
+  // }, [offlineMatrix]);
+
   const handleGridBoxClicks = (e: React.MouseEvent, index: number) => {
     if (offlineMatrix[index] === "") {
       if (gameData?.chanceOf === "creator" && gameData?.creatorID === userID) {
@@ -272,11 +286,7 @@ const Game = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={showSnackbar}
         onClose={() => setShowSnackbar(false)}
-        message={
-          gameData?.creatorID === userID
-            ? "Room joining information copied to the clipboard"
-            : "Spactating link copied"
-        }
+        message="Spactating link copied to the clipboard"
       />
       <Modal
         isHost={gameData?.creatorID === userID}
@@ -349,10 +359,6 @@ const Game = () => {
             {gameData?.matrices?.map((matrixElement, index) => (
               <motion.div
                 onClick={(e) => handleGridBoxClicks(e, index)}
-                variants={gridBoxVariants}
-                whileHover="hover"
-                initial="initial"
-                animate="animate"
                 key={index}
                 className="game__boardBox"
                 style={{

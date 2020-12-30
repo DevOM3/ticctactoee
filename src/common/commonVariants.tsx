@@ -70,3 +70,22 @@ export const passwordVariant = {
     },
   },
 };
+
+export const containerDivVariants = {
+  hidden: {
+    scale: 0,
+  },
+  visible: {
+    scale: 1,
+    transition: {
+      duration: 1.5,
+      type: "spring",
+    },
+  },
+  exit: {
+    scale: 0,
+    transition: {
+      ease: "easeInOut",
+    },
+  },
+};

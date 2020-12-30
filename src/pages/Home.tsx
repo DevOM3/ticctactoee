@@ -5,8 +5,12 @@ import "./Home.css";
 import { AnimatePresence, motion } from "framer-motion";
 import { useStateValue } from "../context/StateProvider";
 import { actionTypes } from "../context/reducer";
-import { containerVariants } from "../common/commonVariants";
+import {
+  containerDivVariants,
+  containerVariants,
+} from "../common/commonVariants";
 import { v4 } from "uuid";
+import VanillaTilt from "vanilla-tilt";
 
 const titleVariants = {
   initial: { y: "-100vh" },
@@ -27,6 +31,20 @@ const divVariants = {
 const Home = () => {
   const [{ nickname }, dispatch] = useStateValue();
   const [nickName, setNickName] = useState("");
+
+  useEffect(() => {
+    const homeContainer: HTMLElement = document.querySelector(
+      "#home__contanier"
+    ) as HTMLElement;
+    if (homeContainer) {
+      VanillaTilt.init(homeContainer, {
+        max: 21,
+        speed: 444,
+        glare: true,
+        "max-glare": 1,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const userIDFromLocalStorage = localStorage.getItem("userID");
@@ -83,101 +101,114 @@ const Home = () => {
       animate="visible"
       exit="exit"
     >
-      <motion.h1
-        className="home__title"
-        id="home__title"
-        initial="initial"
-        animate="animate"
-        variants={titleVariants}
+      <motion.div
+        id="home__contanier"
+        className="home__contanier"
+        variants={containerDivVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
       >
-        TIC TAC TOE
-      </motion.h1>
+        <motion.h1
+          className="home__title"
+          id="home__title"
+          initial="initial"
+          animate="animate"
+          variants={titleVariants}
+        >
+          TIC TAC TOE
+        </motion.h1>
 
-      {!nickname ? (
-        <motion.div variants={divVariants} initial="initial" animate="animate">
-          <FormControl>
-            <TextField
-              autoFocus
-              style={{ marginBottom: 11, caretColor: "transparent" }}
-              onChange={(e) => setNickName(e.target.value.slice(0, 10))}
-              required
-              type="text"
-              variant="outlined"
-              placeholder="Enter a Nickname"
-              value={nickName}
-              inputProps={{
-                style: {
-                  textAlign: "center",
-                },
-              }}
-            />
-            <div style={{ height: 51 }}>
-              <AnimatePresence>
-                {nickName.trim() && (
-                  <motion.div
-                    initial="initial"
-                    animate="animate"
-                    exit="initial"
-                    whileHover="hover"
-                    variants={divVariants}
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Button
-                      disableElevation
-                      color="secondary"
-                      variant="contained"
-                      onClick={() => {
-                        dispatch({
-                          type: actionTypes.SET_NICKNAME,
-                          nickname: nickName.trim(),
-                        });
+        {!nickname ? (
+          <motion.div
+            variants={divVariants}
+            initial="initial"
+            animate="animate"
+          >
+            <FormControl>
+              <TextField
+                autoFocus
+                style={{ marginBottom: 11, caretColor: "transparent" }}
+                onChange={(e) => setNickName(e.target.value.slice(0, 10))}
+                required
+                type="text"
+                variant="outlined"
+                placeholder="Enter a Nickname"
+                value={nickName}
+                inputProps={{
+                  style: {
+                    textAlign: "center",
+                  },
+                }}
+              />
+              <div style={{ height: 51 }}>
+                <AnimatePresence>
+                  {nickName.trim() && (
+                    <motion.div
+                      initial="initial"
+                      animate="animate"
+                      exit="initial"
+                      whileHover="hover"
+                      variants={divVariants}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
-                      Let's Go
-                    </Button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </FormControl>
-        </motion.div>
-      ) : (
-        <AnimatePresence>
-          {nickname && (
-            <motion.div
-              variants={divVariants}
-              initial="initial"
-              animate="animate"
-              exit="initial"
-            >
-              <ButtonGroup>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  disableElevation
-                  to="/join"
-                  component={Link}
-                >
-                  Join existing Room
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  disableElevation
-                  to="/create"
-                  component={Link}
-                >
-                  Create a new Room
-                </Button>
-              </ButtonGroup>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
+                      <Button
+                        disableElevation
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => {
+                          dispatch({
+                            type: actionTypes.SET_NICKNAME,
+                            nickname: nickName.trim(),
+                          });
+                        }}
+                      >
+                        Let's Go
+                      </Button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </FormControl>
+          </motion.div>
+        ) : (
+          <AnimatePresence>
+            {nickname && (
+              <motion.div
+                variants={divVariants}
+                initial="initial"
+                animate="animate"
+                exit="initial"
+              >
+                <ButtonGroup style={{ marginBottom: 51 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    to="/join"
+                    component={Link}
+                  >
+                    Join existing Room
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    disableElevation
+                    to="/create"
+                    component={Link}
+                  >
+                    Create a new Room
+                  </Button>
+                </ButtonGroup>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
+      </motion.div>
     </motion.div>
   );
 };

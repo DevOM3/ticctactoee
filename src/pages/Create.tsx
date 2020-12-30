@@ -11,8 +11,10 @@ import { green, lightGreen, red } from "@material-ui/core/colors";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import VanillaTilt from "vanilla-tilt";
 import {
   buttonVariants,
+  containerDivVariants,
   containerVariants,
   passwordVariant,
 } from "../common/commonVariants";
@@ -68,6 +70,20 @@ const Create = () => {
 
   useEffect(() => {
     nickname ? setRoomName(`${nickname}'s Room`) : history.replace("/");
+  }, []);
+
+  useEffect(() => {
+    const homeContainer: HTMLElement = document.querySelector(
+      "#create__contanier"
+    ) as HTMLElement;
+    if (homeContainer) {
+      VanillaTilt.init(homeContainer, {
+        max: 21,
+        speed: 444,
+        glare: true,
+        "max-glare": 1,
+      });
+    }
   }, []);
 
   const handleCreateButtonClick = (e: React.MouseEvent) => {
@@ -171,100 +187,109 @@ const Create = () => {
       exit="exit"
     >
       <motion.div
-        variants={titleVariant}
-        initial="initial"
-        animate="animate"
-        whileHover="hover"
-        style={{ marginBottom: 21 }}
+        id="create__contanier"
+        className="create__contanier"
+        variants={containerDivVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
       >
-        <Typography component="h3" variant="h3">
-          Create new Room
-        </Typography>
-      </motion.div>
-      <motion.div variants={formVariant} initial="initial" animate="animate">
-        <FormControl>
-          <TextField
-            autoFocus
-            style={{ marginBottom: 11, caretColor: "transparent" }}
-            onChange={(e) => setRoomName(e.target.value.slice(0, 17))}
-            required
-            type="text"
-            variant="outlined"
-            placeholder="Enter Room name"
-            value={roomName}
-            inputProps={{
-              style: {
-                textAlign: "center",
-              },
-            }}
-          />
-          <FormControlLabel
-            value="start"
-            control={
-              <CustomSwitch
-                color="primary"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setEnablePassword(e.target.checked)
-                }
-              />
-            }
-            label="Enable Password"
-            labelPlacement="top"
-          />
-          <AnimatePresence>
-            {enablePassword && (
-              <motion.div
-                variants={passwordVariant}
-                initial="initial"
-                animate="animate"
-                exit="initial"
-              >
-                <TextField
-                  autoFocus
-                  style={{ marginBottom: 11, caretColor: "transparent" }}
-                  onChange={(e) => setPassword(e.target.value.slice(0, 12))}
-                  required
-                  type="text"
-                  variant="outlined"
-                  placeholder="Enter Room Password"
-                  value={password}
-                  inputProps={{
-                    style: {
-                      textAlign: "center",
-                    },
-                  }}
+        <motion.div
+          variants={titleVariant}
+          initial="initial"
+          animate="animate"
+          whileHover="hover"
+          style={{ marginBottom: 21 }}
+        >
+          <Typography component="h3" variant="h3">
+            Create new Room
+          </Typography>
+        </motion.div>
+        <motion.div variants={formVariant} initial="initial" animate="animate">
+          <FormControl>
+            <TextField
+              autoFocus
+              style={{ marginBottom: 11, caretColor: "transparent" }}
+              onChange={(e) => setRoomName(e.target.value.slice(0, 17))}
+              required
+              type="text"
+              variant="outlined"
+              placeholder="Enter Room name"
+              value={roomName}
+              inputProps={{
+                style: {
+                  textAlign: "center",
+                },
+              }}
+            />
+            <FormControlLabel
+              value="start"
+              control={
+                <CustomSwitch
+                  color="primary"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setEnablePassword(e.target.checked)
+                  }
                 />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <div style={{ height: 51 }}>
+              }
+              label="Enable Password"
+              labelPlacement="top"
+            />
             <AnimatePresence>
-              {((roomName.trim() && !enablePassword) ||
-                (enablePassword && password.trim().length >= 4)) && (
+              {enablePassword && (
                 <motion.div
+                  variants={passwordVariant}
                   initial="initial"
                   animate="animate"
                   exit="initial"
-                  whileHover="hover"
-                  variants={buttonVariants}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
                 >
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    onClick={handleCreateButtonClick}
-                  >
-                    Create
-                  </Button>
+                  <TextField
+                    autoFocus
+                    style={{ marginBottom: 11, caretColor: "transparent" }}
+                    onChange={(e) => setPassword(e.target.value.slice(0, 12))}
+                    required
+                    type="text"
+                    variant="outlined"
+                    placeholder="Enter Room Password"
+                    value={password}
+                    inputProps={{
+                      style: {
+                        textAlign: "center",
+                      },
+                    }}
+                  />
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-        </FormControl>
+            <div style={{ height: 51 }}>
+              <AnimatePresence>
+                {((roomName.trim() && !enablePassword) ||
+                  (enablePassword && password.trim().length >= 4)) && (
+                  <motion.div
+                    initial="initial"
+                    animate="animate"
+                    exit="initial"
+                    whileHover="hover"
+                    variants={buttonVariants}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={handleCreateButtonClick}
+                    >
+                      Create
+                    </Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </FormControl>
+        </motion.div>
       </motion.div>
     </motion.div>
   );

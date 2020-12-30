@@ -2,8 +2,10 @@ import { Button, FormControl, TextField, Typography } from "@material-ui/core";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import VanillaTilt from "vanilla-tilt";
 import {
   buttonVariants,
+  containerDivVariants,
   containerVariants,
   passwordVariant,
 } from "../common/commonVariants";
@@ -48,6 +50,20 @@ const Join = () => {
   useEffect(() => {
     !nickname && history.replace("/");
   }, [nickname, history]);
+
+  useEffect(() => {
+    const homeContainer: HTMLElement = document.querySelector(
+      "#join__contanier"
+    ) as HTMLElement;
+    if (homeContainer) {
+      VanillaTilt.init(homeContainer, {
+        max: 21,
+        speed: 444,
+        glare: true,
+        "max-glare": 1,
+      });
+    }
+  }, []);
 
   const handleJoinClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -162,110 +178,119 @@ const Join = () => {
       exit="exit"
     >
       <motion.div
-        variants={titleVariant}
-        initial="initial"
-        animate="animate"
-        style={{ marginBottom: 21 }}
+        id="join__contanier"
+        className="join__contanier"
+        variants={containerDivVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
       >
-        <Typography component="h3" variant="h3">
-          Join existing Room
-        </Typography>
-      </motion.div>
-      <motion.div variants={formVariant} initial="initial" animate="animate">
-        <FormControl>
-          <AnimatePresence>
-            {!showPasswordField && (
-              <motion.div
-                variants={passwordVariant}
-                initial="initial"
-                animate="animate"
-                exit="initial"
-              >
-                <TextField
-                  autoFocus
-                  helperText={error}
-                  FormHelperTextProps={{ style: { textAlign: "center" } }}
-                  error={!!error}
-                  style={{ marginBottom: 11, caretColor: "transparent" }}
-                  onChange={(e) => {
-                    setJoiningID(e.target.value);
-                    if (error && e.target.value.trim()) setError("");
-                  }}
-                  required
-                  type="text"
-                  variant="outlined"
-                  placeholder="Enter Joining ID"
-                  value={joiningID}
-                  inputProps={{
-                    style: {
-                      textAlign: "center",
-                    },
-                  }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <AnimatePresence>
-            {showPasswordField && (
-              <motion.div
-                variants={passwordVariant}
-                initial="initial"
-                animate="animate"
-                exit="initial"
-              >
-                <TextField
-                  autoFocus
-                  style={{ marginBottom: 11, caretColor: "transparent" }}
-                  FormHelperTextProps={{ style: { textAlign: "center" } }}
-                  error={!!passwordError}
-                  helperText={passwordError}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    if (passwordError && e.target.value.trim())
-                      setPasswordError("");
-                  }}
-                  required
-                  type="text"
-                  variant="outlined"
-                  placeholder="Enter Room Password"
-                  value={password}
-                  inputProps={{
-                    style: {
-                      textAlign: "center",
-                    },
-                  }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <div style={{ height: 51 }}>
+        <motion.div
+          variants={titleVariant}
+          initial="initial"
+          animate="animate"
+          style={{ marginBottom: 21 }}
+        >
+          <Typography component="h3" variant="h3">
+            Join existing Room
+          </Typography>
+        </motion.div>
+        <motion.div variants={formVariant} initial="initial" animate="animate">
+          <FormControl>
             <AnimatePresence>
-              {((joiningID.trim() && !showPasswordField) ||
-                (password.trim() && showPasswordField)) && (
+              {!showPasswordField && (
                 <motion.div
+                  variants={passwordVariant}
                   initial="initial"
                   animate="animate"
                   exit="initial"
-                  whileHover="hover"
-                  variants={buttonVariants}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
                 >
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    onClick={handleJoinClick}
-                  >
-                    Join
-                  </Button>
+                  <TextField
+                    autoFocus
+                    helperText={error}
+                    FormHelperTextProps={{ style: { textAlign: "center" } }}
+                    error={!!error}
+                    style={{ marginBottom: 11, caretColor: "transparent" }}
+                    onChange={(e) => {
+                      setJoiningID(e.target.value);
+                      if (error && e.target.value.trim()) setError("");
+                    }}
+                    required
+                    type="text"
+                    variant="outlined"
+                    placeholder="Enter Joining ID"
+                    value={joiningID}
+                    inputProps={{
+                      style: {
+                        textAlign: "center",
+                      },
+                    }}
+                  />
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-        </FormControl>
+            <AnimatePresence>
+              {showPasswordField && (
+                <motion.div
+                  variants={passwordVariant}
+                  initial="initial"
+                  animate="animate"
+                  exit="initial"
+                >
+                  <TextField
+                    autoFocus
+                    style={{ marginBottom: 11, caretColor: "transparent" }}
+                    FormHelperTextProps={{ style: { textAlign: "center" } }}
+                    error={!!passwordError}
+                    helperText={passwordError}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (passwordError && e.target.value.trim())
+                        setPasswordError("");
+                    }}
+                    required
+                    type="text"
+                    variant="outlined"
+                    placeholder="Enter Room Password"
+                    value={password}
+                    inputProps={{
+                      style: {
+                        textAlign: "center",
+                      },
+                    }}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <div style={{ height: 51 }}>
+              <AnimatePresence>
+                {((joiningID.trim() && !showPasswordField) ||
+                  (password.trim() && showPasswordField)) && (
+                  <motion.div
+                    initial="initial"
+                    animate="animate"
+                    exit="initial"
+                    whileHover="hover"
+                    variants={buttonVariants}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={handleJoinClick}
+                    >
+                      Join
+                    </Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </FormControl>
+        </motion.div>
       </motion.div>
     </motion.div>
   );

@@ -50,13 +50,6 @@ export const centerCenterVariants = {
   },
 };
 
-export const gridBoxVariants = {
-  hover: {
-    scale: 1.11,
-    transition: { yoyo: Infinity, duration: 0.3 },
-  },
-};
-
 export const centerBottomVariants = {
   initial: {
     scale: 0,

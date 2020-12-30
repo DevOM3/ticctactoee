@@ -26,51 +26,59 @@ const PlayerInfo = ({ id, name, score, side }: PlayerInfoInterface) => {
 
   return (
     <motion.div
+      style={{
+        borderTopLeftRadius: side === "right" ? 51 : 0,
+        borderBottomLeftRadius: side === "right" ? 51 : 0,
+        borderTopRightRadius: side === "left" ? 51 : 0,
+        borderBottomRightRadius: side === "left" ? 51 : 0,
+      }}
       className="userInfo"
       whileHover={{
-        y: -24,
+        x: side === "left" ? -24 : 24,
         transition: {
           duration: 0.4,
           yoyo: Infinity,
         },
       }}
     >
-      <motion.h2
-        initial={{
-          x: side === "left" ? "-100vw" : "100vw",
-        }}
-        animate={{
-          x: 0,
-        }}
-        transition={{
-          type: "spring",
-          bounce: 0.44,
-          stiffness: 111,
-          delay: 1.5,
-          damping: 9.5,
-        }}
-        className="userInfo__name"
-      >
-        {userID === id ? "You" : name}
-      </motion.h2>
-      <motion.h1
-        initial={{
-          x: side === "left" ? "-100vw" : "100vw",
-        }}
-        animate={{
-          x: 0,
-        }}
-        transition={{
-          type: "spring",
-          bounce: 0.44,
-          stiffness: 111,
-          delay: 1.8,
-          damping: 9.5,
-        }}
-        className="userInfo__score"
-      >
-        {score}
-      </motion.h1>
+      <motion.div className="userInfo__container">
+        <motion.h2
+          initial={{
+            x: side === "left" ? "-100vw" : "100vw",
+          }}
+          animate={{
+            x: 0,
+          }}
+          transition={{
+            type: "spring",
+            bounce: 0.44,
+            stiffness: 111,
+            delay: 1.5,
+            damping: 9.5,
+          }}
+          className="userInfo__name"
+        >
+          {userID === id ? "You" : name}
+        </motion.h2>
+        <motion.h1
+          initial={{
+            x: side === "left" ? "-100vw" : "100vw",
+          }}
+          animate={{
+            x: 0,
+          }}
+          transition={{
+            type: "spring",
+            bounce: 0.44,
+            stiffness: 111,
+            delay: 1.8,
+            damping: 9.5,
+          }}
+          className="userInfo__score"
+        >
+          {score}
+        </motion.h1>
+      </motion.div>
     </motion.div>
   );
 };

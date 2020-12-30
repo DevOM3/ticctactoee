@@ -24,19 +24,13 @@ body {
     #4facfe,
     #00f2fe,
     #2af598,
-    #009efd,
     #92fe9d,
     #00c9ff,
-    #b721ff,
     #21d4fd,
     #0fd850,
-    #f9f047,
     #00dbde,
-    #fc00ff,
-    #f9d423,
     #ff4e50,
-    #50cc7f,
-    #f5d100
+    #50cc7f
   );
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
