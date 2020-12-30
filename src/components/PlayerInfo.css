@@ -21,10 +21,10 @@
 
 .userInfo__name {
   font-family: "Yeon Sung", cursive;
-  font-size: 3rem;
+  font-size: 5vw;
 }
 
 .userInfo__score {
   font-family: "Aldrich", sans-serif;
-  font-size: 5rem;
+  font-size: 7vw;
 }

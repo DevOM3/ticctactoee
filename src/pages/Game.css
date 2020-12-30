@@ -47,6 +47,7 @@
 
 .game__roomName {
   font-family: "Bubblegum Sans", cursive;
+  font-size: 2.7vw;
 }
 
 .game__centerCenter {
@@ -78,7 +79,7 @@
   border-radius: 21%;
   font-family: "Lacquer", cursive;
   font-weight: bolder;
-  font-size: 4.4rem;
+  font-size: 9vh;
   transition: transform 521ms ease;
   border: 1px solid black;
   animation: shadowAnimation 10s ease-in-out infinite;
