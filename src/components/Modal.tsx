@@ -39,9 +39,8 @@ const Modal = ({
         .delete()
         .then(() => {
           setShowModal(false);
-          history.push("/");
-        })
-        .then(() => history.push("/"));
+          history.replace("/");
+        });
     } else if (isGuest) {
       history.push("/");
       db.collection(`rooms`)
@@ -57,9 +56,7 @@ const Modal = ({
         .then(() => {
           setShowModal(false);
           history.push("/");
-        })
-        .then(() => history.push("/"));
-      history.push("/");
+        });
     } else {
       history.replace("/");
     }

@@ -217,20 +217,22 @@ const Game = () => {
     }
   }, [offlineMatrix]);
 
-  // useEffect(() => {
-  //   const grids = document.querySelectorAll(
-  //     ".game__boardBox"
-  //   ) as NodeListOf<HTMLElement>;
-  //   if (grids) {
-  //     grids.forEach((grid: HTMLElement) => {
-  //       if (grid.innerText === "X") {
-  //         grid.style.backgroundColor = "greenyellow";
-  //       } else if (grid.innerText === "O") {
-  //         grid.style.backgroundColor = "tomato";
-  //       }
-  //     });
-  //   }
-  // }, [offlineMatrix]);
+  useEffect(() => {
+    const grids = document.querySelectorAll(
+      ".game__boardBox"
+    ) as NodeListOf<HTMLElement>;
+    if (grids) {
+      grids.forEach((grid: HTMLElement) => {
+        if (grid.innerText === "X") {
+          gameData?.creatorID === userID && (grid.style.color = "green");
+          gameData?.guestID === userID && (grid.style.color = "red");
+        } else if (grid.innerText === "O") {
+          gameData?.creatorID === userID && (grid.style.color = "red");
+          gameData?.guestID === userID && (grid.style.color = "green");
+        }
+      });
+    }
+  }, [offlineMatrix]);
 
   const handleGridBoxClicks = (e: React.MouseEvent, index: number) => {
     if (offlineMatrix[index] === "") {

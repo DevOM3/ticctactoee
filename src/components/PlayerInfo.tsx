@@ -31,6 +31,10 @@ const PlayerInfo = ({ id, name, score, side }: PlayerInfoInterface) => {
         borderBottomLeftRadius: side === "right" ? 51 : 0,
         borderTopRightRadius: side === "left" ? 51 : 0,
         borderBottomRightRadius: side === "left" ? 51 : 0,
+        borderRightWidth: side === "left" ? 2 : 0,
+        borderLeftWidth: side === "right" ? 2 : 0,
+        borderLeftStyle: "solid",
+        borderRightStyle: "solid",
       }}
       className="userInfo"
       whileHover={{
