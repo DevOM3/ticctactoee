@@ -11,6 +11,7 @@ import {
 } from "../common/commonVariants";
 import { v4 } from "uuid";
 import VanillaTilt from "vanilla-tilt";
+import { speak } from "../common/speaker";
 
 const titleVariants = {
   initial: { y: "-100vh" },
@@ -93,6 +94,19 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const letsGoClick = (e: React.MouseEvent) => {
+    dispatch({
+      type: actionTypes.SET_NICKNAME,
+      nickname: nickName.trim(),
+    });
+
+    speak(
+      `Welcome to Tic Tac Toe, you can Join an existing Room or Create a new Room`
+    );
+  };
+
+  console.log(window.speechSynthesis.getVoices());
+
   return (
     <motion.div
       className="home"
@@ -160,12 +174,7 @@ const Home = () => {
                         disableElevation
                         color="secondary"
                         variant="contained"
-                        onClick={() => {
-                          dispatch({
-                            type: actionTypes.SET_NICKNAME,
-                            nickname: nickName.trim(),
-                          });
-                        }}
+                        onClick={letsGoClick}
                       >
                         Let's Go
                       </Button>

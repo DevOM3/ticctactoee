@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { containerDivVariants } from "../common/commonVariants";
 import VanillaTilt from "vanilla-tilt";
+import { speak } from "../common/speaker";
 
 interface LoaderInterface {
   id: string | undefined;
@@ -14,6 +15,10 @@ interface LoaderInterface {
 
 const Loader = ({ id, isHost, password }: LoaderInterface) => {
   const [showSnackbar, setShowSnackbar] = useState(false);
+
+  useEffect(() => {
+    isHost && speak(`Waiting for player to join`);
+  }, [isHost]);
 
   useEffect(() => {
     const homeContainer: HTMLElement = document.querySelector(

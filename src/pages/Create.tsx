@@ -19,6 +19,7 @@ import {
   passwordVariant,
 } from "../common/commonVariants";
 import { db } from "../common/firebase";
+import { speak } from "../common/speaker";
 import { useStateValue } from "../context/StateProvider";
 import "./Create.css";
 
@@ -117,7 +118,10 @@ const Create = () => {
                     matrix: ["", "", "", "", "", "", "", "", ""],
                     chanceOf: chanceOf,
                   })
-                  .then((response) => history.replace(`/game/${response.id}`));
+                  .then((response) => {
+                    speak("Room created");
+                    history.replace(`/game/${response.id}`);
+                  });
               } else {
                 const createNewRoom = window.confirm(
                   `You are already playing as a guest in another Room, \nDo you wish to exit "${
@@ -136,7 +140,10 @@ const Create = () => {
                       ties: 0,
                       matrix: ["", "", "", "", "", "", "", "", ""],
                     })
-                    .then(() => handleCreateButtonClick(e));
+                    .then(() => {
+                      speak("Room created");
+                      handleCreateButtonClick(e);
+                    });
                 }
               }
             });
@@ -148,6 +155,7 @@ const Create = () => {
           );
 
           if (enterPreviousRoom) {
+            speak("Entering old room");
             history.replace(`/game/${response.docs[0].id}`);
           } else {
             const createNewRoom = window.confirm(
@@ -171,7 +179,10 @@ const Create = () => {
                   matrix: ["", "", "", "", "", "", "", "", ""],
                   chanceOf: chanceOf,
                 })
-                .then(() => history.replace(`/game/${response.docs[0].id}`));
+                .then(() => {
+                  speak(`Room updated with new Data`);
+                  history.replace(`/game/${response.docs[0].id}`);
+                });
             }
           }
         }
@@ -227,9 +238,15 @@ const Create = () => {
               control={
                 <CustomSwitch
                   color="primary"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setEnablePassword(e.target.checked)
-                  }
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setEnablePassword(e.target.checked);
+                    e.target.checked === false && setPassword("");
+                    speak(
+                      e.target.checked
+                        ? "Enter password!"
+                        : "Password toggled off!"
+                    );
+                  }}
                 />
               }
               label="Enable Password"

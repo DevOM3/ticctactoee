@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { backdropVariants, modalVariants } from "../common/commonVariants";
 import ReplayIcon from "@material-ui/icons/Replay";
 import { useHistory } from "react-router-dom";
+import { speak } from "../common/speaker";
 
 interface LeaveModalInterface {
   isHost: boolean;
@@ -33,16 +34,15 @@ const Modal = ({
     e.preventDefault();
 
     if (isHost) {
-      history.push("/");
       db.collection(`rooms`)
         .doc(roomID)
         .delete()
         .then(() => {
+          speak(`Disbanding the Room`);
           setShowModal(false);
           history.replace("/");
         });
     } else if (isGuest) {
-      history.push("/");
       db.collection(`rooms`)
         .doc(roomID)
         .update({
@@ -54,11 +54,13 @@ const Modal = ({
           matrix: ["", "", "", "", "", "", "", "", ""],
         })
         .then(() => {
+          speak("Exiting a Room");
           setShowModal(false);
           history.push("/");
         });
     } else {
       history.replace("/");
+      speak("Exiting Spectator mode");
     }
   };
 
@@ -71,6 +73,7 @@ const Modal = ({
         matrix: ["", "", "", "", "", "", "", "", ""],
       })
       .then(() => {
+        speak("Game restarted");
         setShowModal(false);
         setShouldUpdatePoints && setShouldUpdatePoints(true);
       });

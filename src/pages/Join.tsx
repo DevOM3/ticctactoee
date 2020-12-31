@@ -10,6 +10,7 @@ import {
   passwordVariant,
 } from "../common/commonVariants";
 import { db } from "../common/firebase";
+import { speak } from "../common/speaker";
 import { useStateValue } from "../context/StateProvider";
 import "./Join.css";
 
@@ -48,8 +49,12 @@ const Join = () => {
   const [showPasswordField, setShowPasswordField] = useState(false);
 
   useEffect(() => {
-    !nickname && history.replace("/");
+    !nickname ? history.replace("/") : speak(`Enter Room ID`);
   }, [nickname, history]);
+
+  useEffect(() => {
+    showPasswordField && speak(`Enter Room Password`);
+  }, [showPasswordField]);
 
   useEffect(() => {
     const homeContainer: HTMLElement = document.querySelector(
@@ -78,7 +83,10 @@ const Join = () => {
           creatorPoints: 0,
           ties: 0,
         })
-        .then(() => history.replace(`/game/${joiningID}`));
+        .then(() => {
+          speak(`Joining a Room`);
+          history.replace(`/game/${joiningID}`);
+        });
     };
 
     db.collection("rooms")
@@ -122,6 +130,7 @@ const Join = () => {
                                 }
                               });
                           } else {
+                            speak(`Room is already occupied`);
                             setError("Room is already Occupied");
                           }
                         });
@@ -163,6 +172,7 @@ const Join = () => {
               }
             });
         } else {
+          speak(`Invalid Room ID`);
           setError("Invalid Room ID");
           setJoiningID("");
         }
