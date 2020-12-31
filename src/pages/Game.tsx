@@ -18,6 +18,7 @@ import {
 } from "../common/GameVariants";
 import Loader from "../components/Loader";
 import ExitLoader from "../components/ExitLoader";
+import { speak } from "../common/speaker";
 
 interface PlayerInfoInterface {
   id: string;
