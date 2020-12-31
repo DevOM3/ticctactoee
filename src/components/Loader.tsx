@@ -74,7 +74,7 @@ const Loader = ({ id, isHost, password }: LoaderInterface) => {
             onClick={() => {
               setShowSnackbar(true);
               navigator.clipboard.writeText(
-                `Joining link: http://127.0.0.1:3000/\nJoining ID: ${id}${
+                `Joining link: https://ticctactoee.web.app/\nJoining ID: ${id}${
                   password && "\nPassword: " + password
                 }`
               );

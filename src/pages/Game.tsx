@@ -333,7 +333,7 @@ const Game = () => {
             onClick={() => {
               setShowSnackbar(true);
               navigator.clipboard.writeText(
-                `Spectating link: http://127.0.0.1:3000/game/${gameData?.id}`
+                `Spectating link: https://ticctactoee.web.app/game/${gameData?.id}`
               );
             }}
           >
